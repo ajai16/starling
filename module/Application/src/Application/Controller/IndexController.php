@@ -48,7 +48,7 @@ class IndexController extends BasicController
             $savedRow = $this->saveRow($this->getEntity(), $data);
             $this->em->persist($savedRow);
             $this->em->flush();
-            $this->redirect()->toRoute('application');
+            $this->redirect()->toRoute('home');
         }
         $view = new ViewModel();
         $view->setTemplate('application/index/add.phtml');

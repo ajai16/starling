@@ -21,8 +21,9 @@ class Person {
         return $personList;
     }
 
-    public function getUserRow() {
-        
+    public function getUserRow($data = array()) {
+        $data = array_merge(array('deletedOn' => null), $data);
+        return $this->em->getRepository($this->entity)->findOneBy($data);
     }
             
 }

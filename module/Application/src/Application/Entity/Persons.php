@@ -50,6 +50,13 @@ class Persons
     private $password;
     
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="deleted_on", type="datetime", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $deletedOn;
+    
+    /**
      * @var \Application\Entity\Roles
      *
      * @ORM\ManyToOne(targetEntity="Application\Entity\Roles")
@@ -79,7 +86,6 @@ class Persons
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
-
         return $this;
     }
 
@@ -103,7 +109,6 @@ class Persons
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
-
         return $this;
     }
 
@@ -127,7 +132,6 @@ class Persons
     public function setEmail($email)
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -151,7 +155,6 @@ class Persons
     public function setPassword($password)
     {
         $this->password = $password;
-
         return $this;
     }
     
@@ -175,7 +178,6 @@ class Persons
     public function setRole(\Application\Entity\Roles $role = null)
     {
         $this->role = $role;
-
         return $this;
     }
 
@@ -187,6 +189,29 @@ class Persons
     public function getRole()
     {
         return $this->role;
+    }
+    
+    /**
+     * Set deletedOn
+     *
+     * @param \DateTime $deletedOn
+     *
+     * @return Persons
+     */
+    public function setDeletedOn($deletedOn)
+    {
+        $this->deletedOn = $deletedOn;
+        return $this;
+    }
+
+    /**
+     * Get $deletedOn
+     *
+     * @return \DateTime
+     */
+    public function getDeletedOn()
+    {
+        return $this->deletedOn;
     }
 }
 
