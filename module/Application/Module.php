@@ -12,6 +12,7 @@ namespace Application;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
+use Zend\Authentication\AuthenticationService;
 class Module
 {
     public function onBootstrap(MvcEvent $e)
@@ -33,6 +34,26 @@ class Module
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
+            ),
+        );
+    }
+    
+    /**
+     * @description un-comments the following lines to use alternative Database with current.
+     * @return type
+     */
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'AuthStorage' => function ($sm) {
+                    return new \Application\Controller\Plugin\Auth('starling');
+                },
+                'AuthService' => function($sm) {
+                    $authService = new AuthenticationService();
+                    $authService->setStorage($sm->get('AuthStorage'));
+                    return $authService;
+                },
             ),
         );
     }
