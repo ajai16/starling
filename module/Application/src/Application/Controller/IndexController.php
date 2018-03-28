@@ -15,7 +15,11 @@ use Application\Controller\BasicController;
 
 class IndexController extends BasicController
 {
-
+    protected $currentTab = null;
+    public function __construct() {
+        $this->currentTab = "home";
+    }
+    
     public function indexAction()
     {
         // $layout = $this->layout();
@@ -24,6 +28,7 @@ class IndexController extends BasicController
         $personMapper = new \Application\Mapper\Person($this->em);
         $personList = $personMapper->getUserList();
 
+        $this->layout()->currentTab = $this->currentTab;
         return new ViewModel(array(
             'personList' => $personList,
         ));
@@ -51,6 +56,7 @@ class IndexController extends BasicController
             $this->redirect()->toRoute('home');
         }
         $view = new ViewModel();
+        $this->layout()->currentTab = $this->currentTab;
         $view->setTemplate('application/index/add.phtml');
         return $view;
     }

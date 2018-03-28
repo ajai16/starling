@@ -13,8 +13,19 @@ use Application\Controller\BasicController;
 
 class LoginController extends BasicController 
 {
+    protected $currentTab = null;
+    public function __construct() {
+        $this->currentTab = "login";
+    }
+    
     public function indexAction() {
         $request = $this->getRequest();
+        $authService = $this->getAuthService();
+        
+        if ($authService->hasIdentity()){
+            return $this->redirect()->toRoute('dashboard');
+        }
+        
         if($request->isPost()) {
             $email = $request->getPost('email');
             $password = $request->getPost('password');
@@ -36,14 +47,23 @@ class LoginController extends BasicController
                 'lastName'  => $userRow->getLastName(),
                 'email' => $userRow->getEmail()
             ];
-            $this->getAuthService()->setStorage($this->getSessionStorage());
-            $this->getAuthService()->getStorage()->write($userData);
+            $authService->setStorage($this->getSessionStorage());
+            $authService->getStorage()->write($userData);
             $this->redirect()->toRoute('dashboard');
         }
+        $this->layout()->currentTab = $this->currentTab;
     }
     
     public function forgotPasswordAction() {
         
+    }
+    
+    public function logoutAction() {
+        $this->getSessionStorage()->forgetMe();
+        $this->getAuthService()->clearIdentity();
+         
+        $this->flashmessenger()->addMessage("You've been logged out");
+        return $this->redirect()->toRoute('login');
     }
     
 }
